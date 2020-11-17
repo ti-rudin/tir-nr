@@ -42,19 +42,16 @@
             "eb102c0d.9fc26",
             "da9e4dd8.dda28",
             "3daa3be4.cbc784",
-            "9573dd3b.3ef2d",
-            "41f65ea5.d2b32",
-            "da0cefa.85c541",
             "536d19d6.716798",
-            "ef0609c6.8d6268",
             "9d731fd4.ec333",
             "ab453ff0.f0607",
             "e72704f9.38636",
-            "5bd6bf81.978ea8"
+            "5bd6bf81.978ea8",
+            "1b14a050.631f9"
         ],
-        "x": 34,
+        "x": 54,
         "y": 459,
-        "w": 1862,
+        "w": 1802,
         "h": 202
     },
     {
@@ -76,22 +73,16 @@
             "d4a5db44.14dd68",
             "1cce308b.ed6fef",
             "4a9286e5.e8f4e8",
-            "cec05e98.b5fc9",
-            "6a5f7b91.23c594",
-            "769ae838.0e9328",
             "29caead0.b6b606",
             "2c379b0e.e23f04",
             "7ecd73a6.b4458c",
-            "11db32dd.d70f9d",
             "5ad83996.397588",
-            "751e7005.a97d5",
-            "3c339a4d.3cb876",
-            "45ed85bb.79e62c"
+            "3c339a4d.3cb876"
         ],
         "x": 34,
         "y": 239,
         "w": 1832,
-        "h": 182
+        "h": 142
     },
     {
         "id": "89dcb365.f1eba",
@@ -110,22 +101,18 @@
             "13f2257b.01983b",
             "a445188a.34a218",
             "71acd437.96b3dc",
-            "79c03d06.fab464",
             "18fc789.fac9d87",
             "79163972.5bdbe8",
-            "be3afbce.a71e18",
-            "a31b1ea5.de809",
-            "7f75ebf2.4c3ca4",
-            "ae7869eb.5f07d8",
             "a9b8fcea.cf55d",
             "e34cab2c.f35798",
             "e545caa6.7236c8",
             "49a21ceb.7121c4",
-            "623691b3.5a4c"
+            "623691b3.5a4c",
+            "d010274c.5b8918"
         ],
         "x": 53,
         "y": 799,
-        "w": 1712,
+        "w": 1443,
         "h": 182
     },
     {
@@ -5187,7 +5174,7 @@
         "z": "38c422f8.b82bf6",
         "g": "b76d1300.04d19",
         "name": "payload = payload.bots",
-        "func": "\nmsg.payload = msg.payload.bots;\nreturn msg;",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\nmsg.payload = msg.payload.bots;\n\n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -5196,8 +5183,7 @@
         "y": 580,
         "wires": [
             [
-                "e68822f4.50329",
-                "9573dd3b.3ef2d"
+                "e68822f4.50329"
             ]
         ]
     },
@@ -5217,8 +5203,7 @@
         "y": 580,
         "wires": [
             [
-                "d42587f0.33b758",
-                "41f65ea5.d2b32"
+                "d42587f0.33b758"
             ]
         ]
     },
@@ -5228,16 +5213,15 @@
         "z": "38c422f8.b82bf6",
         "g": "b76d1300.04d19",
         "name": "onoff === true,  busy === false ",
-        "func": "if (msg.payload.onoff === true) {\n\n    if (msg.payload.busy === false) {\n        msg.payload = msg.payload.id;\n        return [msg, null];\n    }\n\n    else {\n\n        let id = msg.payload.id;\n        msg.payload = [];\n\n\n        var count = flow.get(id) || 0;\n        count += 1;\n\n        if (count > 12) {\n            node.warn(id); count = 0;\n\n            let newsetb = { \"busy\": false };\n\n            msg.payload = newsetb;\n\n            msg.headers = {};\n            msg.headers['accept'] = 'application/json';\n            msg.headers['Content-Type'] = 'application/json';\n            \n            //чтобымы могли отследить на каком шаге узбек пропал\n            let idstep = id + \"-step\";\n            let step = flow.get(idstep);\n            node.warn(\"step:\" + step + \" id:\" + id);\n\n            const upd = global.get('updateSettings')(msg.payload, id);\n\n            upd.then(upd => {\n\n                node.warn(\"reset busy:\" + id);\n\n            }).catch(error => {\n                node.error(error);\n            });\n\n        }\n\n        flow.set(id, count);\n        return [null, msg];\n\n    }\n}\n\n",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\n\n\n\nif (msg.payload.onoff === true) {\n\n    if (msg.payload.busy === false) {\n        msg.payload = msg.payload.id;\n        \n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\n        return [msg, null];\n    }\n\n    else {\n\n        let id = msg.payload.id;\n        msg.payload = [];\n\n\n        var count = flow.get(id) || 0;\n        count += 1;\n\n        if (count > 12) {\n        \n            let newsetb = { \"busy\": false };\n\n            msg.payload = newsetb;\n\n            msg.headers = {};\n            msg.headers['accept'] = 'application/json';\n            msg.headers['Content-Type'] = 'application/json';\n            \n            const upd = global.get('updateSettings')(msg.payload, id);\n\n            upd.then(upd => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle,\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.warn(\"reset busy:\" + id);\n\n            }).catch(error => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle,\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.error(error);\n            });\n\n        }\n\n        flow.set(id, count);\n        return [null, msg];\n\n    }\n}\n\n\n\n\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1330,
+        "x": 1350,
         "y": 580,
         "wires": [
             [
-                "da0cefa.85c541",
                 "536d19d6.716798"
             ],
             [
@@ -5974,7 +5958,6 @@
         "y": 900,
         "wires": [
             [
-                "be3afbce.a71e18",
                 "18fc789.fac9d87"
             ],
             []
@@ -5986,18 +5969,16 @@
         "z": "38c422f8.b82bf6",
         "g": "89dcb365.f1eba",
         "name": "updateSettings : price, zapret_na_zakup, status",
-        "func": "let idstep = msg.bot.id+\"-step\";\nflow.set(idstep, \"updateSettings : price, zapret_na_zakup, status\");\n\nmsg.bot.last_price = Number(msg.payload);\n    \nif ((msg.bot.last_price > msg.bot.status.sr_ma_big)&&(msg.bot.last_price > msg.bot.status.sr_ma_small)){\n    msg.bot.zapret_na_zakup = false;\n    msg.bot.status.rezhim = \"МА - закуп разрешен\";\n} else {\n    msg.bot.zapret_na_zakup = true;\n    msg.bot.status.rezhim = \"МА - закуп запрещён\";\n}\n\nlet newset = {\"last_price\":Number(msg.payload),\n                \"status\":msg.bot.status, \n                \"zapret_na_zakup\":msg.bot.zapret_na_zakup\n    };\n\nmsg.payload = newset;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\nconst upd = global.get('updateSettings')(msg.payload, msg.bot.id);\n\nupd.then(upd => {\n\n    msg.payload = {\"bot\":msg.bot};\n    node.status({fill:\"green\",shape:\"ring\",text:msg.bot.id});\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});\n\n//   \"zapret_na_zakup\":msg.bot.zapret_na_zakup",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\nmsg.bot.last_price = Number(msg.payload);\n    \nif ((msg.bot.last_price > msg.bot.status.sr_ma_big)&&(msg.bot.last_price > msg.bot.status.sr_ma_small)){\n    msg.bot.zapret_na_zakup = false;\n    msg.bot.status.rezhim = \"МА - закуп разрешен\";\n} else {\n    msg.bot.zapret_na_zakup = true;\n    msg.bot.status.rezhim = \"МА - закуп запрещён\";\n}\n\nlet newset = {\"last_price\":Number(msg.payload),\n                \"status\":msg.bot.status, \n                \"zapret_na_zakup\":msg.bot.zapret_na_zakup\n    };\n\nmsg.payload = newset;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\nconst upd = global.get('updateSettings')(msg.payload, msg.bot.id);\n\nupd.then(upd => {\n\n    msg.payload = {\"bot\":msg.bot};\n    //>трекер>\n        let end_node_time = Date.parse(new Date()) / 1000;\n        let duration = end_node_time - start_node_time;\n        track.push({\n            \"steptitle\": steptitle,\n            \"start_node_time\": start_node_time,\n            \"end_node_time\": end_node_time,\n            \"duration\": duration\n        });\n        flow.set(\"track\", track);\n    //>трекер>\n    node.status({fill:\"green\",shape:\"dot\"});\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n    node.status({fill:\"red\",shape:\"dot\"});\n});\n\n//   \"zapret_na_zakup\":msg.bot.zapret_na_zakup",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1240,
+        "x": 1220,
         "y": 900,
         "wires": [
             [
-                "7f75ebf2.4c3ca4",
-                "d010274c.5b8918",
-                "79c03d06.fab464"
+                "d010274c.5b8918"
             ]
         ],
         "icon": "font-awesome/fa-bolt"
@@ -6025,7 +6006,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 910,
+        "x": 890,
         "y": 900,
         "wires": [
             [
@@ -6041,7 +6022,7 @@
         "type": "function",
         "z": "38c422f8.b82bf6",
         "name": "updateSettings : busy=false",
-        "func": "let newsetb = {\"busy\":false};\n//newset = JSON.stringify(newset);\n//node.warn(newsetb);\n\nmsg.payload = newsetb;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\n    let idstep = msg.bot.id+\"-step\";\n    flow.set(idstep, 8);\n\nconst upd = global.get('updateSettings')(msg.payload, msg.bot.id);\n\nupd.then(upd => {\n    \n    msg.payload = \"updated\"\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});\n",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\nlet newsetb = {\"busy\":false};\n\nmsg.payload = newsetb;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\n    let idstep = msg.bot.id+\"-step\";\n    flow.set(idstep, 8);\n\nconst upd = global.get('updateSettings')(msg.payload, msg.bot.id);\n\nupd.then(upd => {\n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});    \n    msg.payload = \"updated\"\n    node.send(msg);\n\n}).catch(error => {\n    node.status({fill:\"red\",shape:\"dot\"});  \n    node.error(error);\n});",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -6056,34 +6037,12 @@
         "icon": "font-awesome/fa-bolt"
     },
     {
-        "id": "79c03d06.fab464",
-        "type": "delay",
-        "z": "38c422f8.b82bf6",
-        "g": "89dcb365.f1eba",
-        "name": "",
-        "pauseType": "random",
-        "timeout": "1",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "0",
-        "randomLast": "125",
-        "randomUnits": "milliseconds",
-        "drop": false,
-        "x": 1560,
-        "y": 940,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "18fc789.fac9d87",
         "type": "function",
         "z": "38c422f8.b82bf6",
         "g": "89dcb365.f1eba",
         "name": "prepare getprice",
-        "func": "    let idstep = msg.payload.bot.id+\"-step\";\n    flow.set(idstep, 2);\n\n    let moneta = msg.payload.bot.settings.moneta;\n    msg.bot = msg.payload.bot;\n    \n    msg.payload = [];\n    msg.topic = \"prices:\" + moneta;\n    \n\n    \n    return msg;\n    \n",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\nlet moneta = msg.payload.bot.settings.moneta;\nmsg.bot = msg.payload.bot;\n\nmsg.payload = [];\nmsg.topic = \"prices:\" + moneta;\n    \n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\n    \nreturn msg;\n    \n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -6092,8 +6051,7 @@
         "y": 900,
         "wires": [
             [
-                "79163972.5bdbe8",
-                "a31b1ea5.de809"
+                "79163972.5bdbe8"
             ]
         ],
         "inputLabels": [
@@ -6121,64 +6079,9 @@
         "y": 900,
         "wires": [
             [
-                "ae7869eb.5f07d8",
                 "a9b8fcea.cf55d"
             ]
         ]
-    },
-    {
-        "id": "9573dd3b.3ef2d",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "b76d1300.04d19",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1010,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "41f65ea5.d2b32",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "b76d1300.04d19",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1150,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "da0cefa.85c541",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "b76d1300.04d19",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1390,
-        "y": 540,
-        "wires": []
     },
     {
         "id": "3e18acb8.6ea274",
@@ -6198,30 +6101,12 @@
         "wires": []
     },
     {
-        "id": "be3afbce.a71e18",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "89dcb365.f1eba",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 170,
-        "y": 940,
-        "wires": []
-    },
-    {
         "id": "536d19d6.716798",
         "type": "function",
         "z": "38c422f8.b82bf6",
         "g": "b76d1300.04d19",
         "name": "updateSettings : busy=true",
-        "func": "\nlet newset = {\"busy\":true};\n//newset = JSON.stringify(newset);\n//node.warn(newset);\n\nmsg.topic = msg.payload;\nmsg.payload = newset;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\n\nconst upd = global.get('updateSettings')(msg.payload, msg.topic);\n\nupd.then(upd => {\n    \n    msg.payload = msg.topic;\n    let idstep = msg.topic+\"-step\";\n    flow.set(idstep, 1);\n    \n    node.send(msg);\n    node.done();\n\n}).catch(error => {\n    node.error(error);\n});\n\n",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\nlet newset = {\"busy\":true};\n\nmsg.topic = msg.payload;\nmsg.payload = newset;\n\nmsg.headers = {};\nmsg.headers['accept'] = 'application/json';\nmsg.headers['Content-Type'] = 'application/json';\n\n\nconst upd = global.get('updateSettings')(msg.payload, msg.topic);\n\nupd.then(upd => {\n    \n    msg.payload = msg.topic;\n    let idstep = msg.topic+\"-step\";\n\n    \n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\n\n    node.send(msg);\n    node.done();\n\n}).catch(error => {\n    node.status({fill:\"red\",shape:\"dot\"});\n    node.error(error);\n});\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -6230,83 +6115,10 @@
         "y": 580,
         "wires": [
             [
-                "ef0609c6.8d6268",
                 "9d731fd4.ec333"
             ]
         ],
         "icon": "font-awesome/fa-bolt"
-    },
-    {
-        "id": "ef0609c6.8d6268",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "b76d1300.04d19",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1710,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "a31b1ea5.de809",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "89dcb365.f1eba",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 370,
-        "y": 940,
-        "wires": []
-    },
-    {
-        "id": "7f75ebf2.4c3ca4",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "89dcb365.f1eba",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1370,
-        "y": 860,
-        "wires": []
-    },
-    {
-        "id": "ae7869eb.5f07d8",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "89dcb365.f1eba",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 530,
-        "y": 940,
-        "wires": []
     },
     {
         "id": "a9b8fcea.cf55d",
@@ -6314,7 +6126,7 @@
         "z": "38c422f8.b82bf6",
         "g": "89dcb365.f1eba",
         "name": "topic",
-        "func": "msg.topic = msg.bot.id\n\n    let idstep = msg.topic+\"-step\";\n    flow.set(idstep, 3);\n\nreturn msg;",
+        "func": "msg.topic = msg.bot.id\n\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -6336,7 +6148,7 @@
         "links": [
             "34642144.ae139e"
         ],
-        "x": 1855,
+        "x": 1815,
         "y": 580,
         "wires": [],
         "icon": "font-awesome/fa-space-shuttle"
@@ -6398,8 +6210,8 @@
         "g": "89dcb365.f1eba",
         "name": "работаем со всеми этажами",
         "info": "",
-        "x": 1619,
-        "y": 860,
+        "x": 1340,
+        "y": 840,
         "wires": []
     },
     {
@@ -6492,11 +6304,12 @@
         "id": "d010274c.5b8918",
         "type": "link out",
         "z": "38c422f8.b82bf6",
+        "g": "89dcb365.f1eba",
         "name": "передаем этажному узбеку",
         "links": [
             "78ca5c87.8628d4"
         ],
-        "x": 1735,
+        "x": 1455,
         "y": 900,
         "wires": []
     },
@@ -6650,8 +6463,7 @@
         "y": 340,
         "wires": [
             [
-                "d4a5db44.14dd68",
-                "cec05e98.b5fc9"
+                "d4a5db44.14dd68"
             ]
         ]
     },
@@ -6690,7 +6502,6 @@
         "y": 340,
         "wires": [
             [
-                "6a5f7b91.23c594",
                 "2c379b0e.e23f04"
             ]
         ],
@@ -6723,60 +6534,6 @@
         ]
     },
     {
-        "id": "cec05e98.b5fc9",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 690,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "6a5f7b91.23c594",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1030,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "769ae838.0e9328",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1210,
-        "y": 380,
-        "wires": []
-    },
-    {
         "id": "29caead0.b6b606",
         "type": "comment",
         "z": "38c422f8.b82bf6",
@@ -6801,7 +6558,6 @@
         "y": 340,
         "wires": [
             [
-                "769ae838.0e9328",
                 "7ecd73a6.b4458c"
             ],
             []
@@ -6822,8 +6578,7 @@
         "y": 340,
         "wires": [
             [
-                "5ad83996.397588",
-                "751e7005.a97d5"
+                "5ad83996.397588"
             ]
         ],
         "inputLabels": [
@@ -6833,24 +6588,6 @@
             "status"
         ],
         "icon": "font-awesome/fa-compress"
-    },
-    {
-        "id": "11db32dd.d70f9d",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1590,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "5ad83996.397588",
@@ -6867,28 +6604,9 @@
         "y": 340,
         "wires": [
             [
-                "11db32dd.d70f9d",
                 "3c339a4d.3cb876"
             ]
         ]
-    },
-    {
-        "id": "751e7005.a97d5",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1410,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "3c339a4d.3cb876",
@@ -6904,29 +6622,9 @@
         "x": 1750,
         "y": 340,
         "wires": [
-            [
-                "45ed85bb.79e62c"
-            ]
+            []
         ],
         "icon": "font-awesome/fa-bolt"
-    },
-    {
-        "id": "45ed85bb.79e62c",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "g": "6f6de91a.d1af88",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1770,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "e16705a1.83df08",
@@ -7041,7 +6739,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1390,
+        "x": 1430,
         "y": 620,
         "wires": []
     },
@@ -12405,74 +12103,11 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 130,
-        "y": 560,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "5fa2acc0.11bbbc",
-        "type": "function",
-        "z": "38c422f8.b82bf6",
-        "name": "start",
-        "func": "//<трекер<\n\n////>только для стартовой ноды>\nlet track = [];\nlet start_track_time = Date.parse(new Date())/1000;\n////>только для стартовой ноды>\n\nlet start_node_time = start_track_time;\nlet steptitle = node.name;\n\n//>трекер>\n\n\n\nlet end_node_time = Date.parse(new Date())/1000;\n\n\n///////>трекер>\n//track.push([{]\"start_track_time\":start_track_time});\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n///////>трекер>\n\n\n\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 560,
-        "y": 740,
+        "x": 590,
+        "y": 520,
         "wires": [
             [
-                "ac4d85df.f1e5f",
-                "9f2025a7.66287"
-            ]
-        ]
-    },
-    {
-        "id": "ac4d85df.f1e5f",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 670,
-        "y": 700,
-        "wires": []
-    },
-    {
-        "id": "aafe0b07.31efc8",
-        "type": "inject",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 410,
-        "y": 740,
-        "wires": [
-            [
-                "5fa2acc0.11bbbc"
+                "1b14a050.631f9"
             ]
         ]
     },
@@ -12481,7 +12116,7 @@
         "type": "function",
         "z": "38c422f8.b82bf6",
         "name": "get flow.track",
-        "func": "msg.payload = flow.get(\"track\");\nreturn msg;",
+        "func": "\n//<трекер<\nlet track = flow.get(\"track\");\nlet start_node_time = Date.parse(new Date())/1000;\nlet steptitle = node.name;\n//>трекер>\n\nmsg.payload = track;\n\n//<трекер< \nlet end_node_time = Date.parse(new Date())/1000;\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n//>трекер>\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -12516,8 +12151,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 1560,
-        "y": 680,
+        "x": 1540,
+        "y": 720,
         "wires": [
             [
                 "9d0aac45.f6d3c8"
@@ -12542,78 +12177,14 @@
         "wires": []
     },
     {
-        "id": "9f2025a7.66287",
-        "type": "function",
-        "z": "38c422f8.b82bf6",
-        "name": "step 1",
-        "func": "//<трекер<\nlet track = flow.get(\"track\");\nlet start_node_time = Date.parse(new Date())/1000;\nlet steptitle = node.name;\n//>трекер>\n\n\nlet r = 0;\nwhile (r < 2930094000) { \n  //alert( i );\n  r++;\n}\n\n\n//<трекер< \nlet end_node_time = Date.parse(new Date())/1000;\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n//>трекер>\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 810,
-        "y": 740,
-        "wires": [
-            [
-                "236dc327.01b734"
-            ]
-        ]
-    },
-    {
-        "id": "39eda1a9.8da17e",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1330,
-        "y": 700,
-        "wires": []
-    },
-    {
-        "id": "14589a31.64312e",
-        "type": "inject",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 960,
-        "y": 700,
-        "wires": [
-            [
-                "9f2025a7.66287"
-            ]
-        ]
-    },
-    {
         "id": "954c1cf7.5705a8",
         "type": "ui_table",
         "z": "38c422f8.b82bf6",
         "group": "a328c3be.7f91c8",
         "name": "",
         "order": 2,
-        "width": 0,
-        "height": 0,
+        "width": "14",
+        "height": "7",
         "columns": [],
         "outputs": 0,
         "cts": false,
@@ -12622,40 +12193,22 @@
         "wires": []
     },
     {
-        "id": "6f9e08b0.424c2",
+        "id": "1b14a050.631f9",
         "type": "function",
         "z": "38c422f8.b82bf6",
-        "name": "step 2",
-        "func": "//<трекер<\nlet track = flow.get(\"track\");\nlet start_node_time = Date.parse(new Date())/1000;\nlet steptitle = node.name;\n//>трекер>\n\n\nlet i = 0;\nwhile (i < 15304000) { \n  //alert( i );\n  i++;\n}\n\n\n//<трекер< \nlet end_node_time = Date.parse(new Date())/1000;\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n//>трекер>\nreturn msg;",
+        "g": "b76d1300.04d19",
+        "name": "start",
+        "func": "//<трекер<\n    ////>только для стартовой ноды>\n        var track = [];\n        let start_track_time = Date.parse(new Date()) / 1000;\n        let start_node_time = start_track_time;\n        let steptitle = node.name;\n    ////>только для стартовой ноды>\n//>трекер>\n\n\n\n\n\n\n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({ fill: \"green\", shape: \"ring\", text: duration });\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1190,
-        "y": 740,
+        "x": 730,
+        "y": 520,
         "wires": [
             [
-                "39eda1a9.8da17e",
-                "9d0aac45.f6d3c8"
+                "7792f18e.f49f5"
             ]
-        ]
-    },
-    {
-        "id": "236dc327.01b734",
-        "type": "graphql",
-        "z": "38c422f8.b82bf6",
-        "name": "gql запрос списка ботов",
-        "graphql": "ab190c2e.90269",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "query {\n  bots{\n  onoff\n  id\n  busy\n  }\n}",
-        "x": 1010,
-        "y": 780,
-        "wires": [
-            [
-                "6f9e08b0.424c2"
-            ],
-            []
         ]
     }
 ]
