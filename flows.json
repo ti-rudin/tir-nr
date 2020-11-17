@@ -6193,8 +6193,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 2150,
-        "y": 620,
+        "x": 2130,
+        "y": 640,
         "wires": []
     },
     {
