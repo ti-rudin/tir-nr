@@ -12546,7 +12546,7 @@
         "type": "function",
         "z": "38c422f8.b82bf6",
         "name": "step 1",
-        "func": "//<трекер<\nlet track = flow.get(\"track\");\nlet start_node_time = Date.parse(new Date())/1000;\nlet steptitle = node.name;\n//>трекер>\n\n\nlet r = 0;\nwhile (r < 2830094000) { \n  //alert( i );\n  r++;\n}\n\n\n//<трекер< \nlet end_node_time = Date.parse(new Date())/1000;\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n//>трекер>\nreturn msg;",
+        "func": "//<трекер<\nlet track = flow.get(\"track\");\nlet start_node_time = Date.parse(new Date())/1000;\nlet steptitle = node.name;\n//>трекер>\n\n\nlet r = 0;\nwhile (r < 2930094000) { \n  //alert( i );\n  r++;\n}\n\n\n//<трекер< \nlet end_node_time = Date.parse(new Date())/1000;\nlet duration = end_node_time-start_node_time;\ntrack.push([steptitle,start_node_time,end_node_time,duration]);\nmsg.track = track;\nflow.set(\"track\", track);\n//>трекер>\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
