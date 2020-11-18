@@ -201,7 +201,8 @@
             "cf8e2d12.ded23",
             "1b14a050.631f9",
             "1692a27.8368fde",
-            "cc1a6775.26469"
+            "cc1a6775.26469",
+            "83eb55cb.4546"
         ],
         "x": 54,
         "y": 499,
@@ -5276,7 +5277,7 @@
         "z": "38c422f8.b82bf6",
         "g": "6d0bae3e.4983b8",
         "name": "onoff === true,  busy === false ",
-        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\n\n\n\nif (msg.payload.onoff === true) {\n\n    if (msg.payload.busy === false) {\n        msg.payload = msg.payload.id;\n        \n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\n        return [msg, null];\n    }\n\n    else {\n\n        let id = msg.payload.id;\n        msg.payload = [];\n\n\n        var count = flow.get(id) || 0;\n        count += 1;\n\n        if (count > 12) {\n        \n            let newsetb = { \"busy\": false };\n\n            msg.payload = newsetb;\n\n            msg.headers = {};\n            msg.headers['accept'] = 'application/json';\n            msg.headers['Content-Type'] = 'application/json';\n            \n            const upd = global.get('updateSettings')(msg.payload, id);\n\n            upd.then(upd => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle,\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.warn(\"reset busy:\" + id);\n\n            }).catch(error => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle,\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.error(error);\n            });\n\n        }\n\n        flow.set(id, count);\n        return [null, msg];\n\n    }\n}\n\n\n\n\n",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\n\n\n\nif (msg.payload.onoff === true) {\n\n    if (msg.payload.busy === false) {\n        msg.payload = msg.payload.id;\n        \n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle+\"-norm\",\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\n        return [msg, null];\n    }\n\n    else {\n\n        let id = msg.payload.id;\n        msg.payload = [];\n\n\n        var count = flow.get(id) || 0;\n        count += 1;\n\n        if (count > 12) {\n        \n            let newsetb = { \"busy\": false };\n\n            msg.payload = newsetb;\n\n            msg.headers = {};\n            msg.headers['accept'] = 'application/json';\n            msg.headers['Content-Type'] = 'application/json';\n            \n            const upd = global.get('updateSettings')(msg.payload, id);\n\n            upd.then(upd => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle+\"-12\",\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.warn(\"reset busy:\" + id);\n\n            }).catch(error => {\n                //>трекер>\n                    let end_node_time = Date.parse(new Date()) / 1000;\n                    let duration = end_node_time - start_node_time;\n                    track.push({\n                        \"steptitle\": steptitle+\"-error update\",\n                        \"start_node_time\": start_node_time,\n                        \"end_node_time\": end_node_time,\n                        \"duration\": duration\n                    });\n                    flow.set(\"track\", track);\n                //>трекер>\n                node.status({fill:\"red\",shape:\"dot\"});\n                \n                node.error(error);\n            });\n\n        }\n\n        flow.set(id, count);\n        return [null, msg];\n\n    }\n}\n\n\n\n\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -12079,9 +12080,9 @@
         "type": "comment",
         "z": "38c422f8.b82bf6",
         "g": "c0b0e6b5.5e71f",
-        "name": "Финиш трека",
+        "name": "Финиш трека. Семафор = \"Свободно\"",
         "info": "",
-        "x": 2130,
+        "x": 2220,
         "y": 540,
         "wires": []
     },
@@ -12351,6 +12352,17 @@
         "statusType": "auto",
         "x": 710,
         "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "83eb55cb.4546",
+        "type": "comment",
+        "z": "38c422f8.b82bf6",
+        "g": "6d0bae3e.4983b8",
+        "name": "Семафор = \"Занято\"",
+        "info": "",
+        "x": 1740,
+        "y": 560,
         "wires": []
     }
 ]
