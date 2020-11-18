@@ -7412,7 +7412,7 @@
         "wires": [
             [
                 "160b4dd4.4f8e12",
-                "81d26c3d.afe5b"
+                "34f31521.2b27d2"
             ]
         ]
     },
@@ -7456,7 +7456,8 @@
             ],
             [
                 "61b59ea7.10c3a",
-                "32d654b5.43c0dc"
+                "5acd6a6e.04f10c",
+                "f8a6e470.166c58"
             ]
         ]
     },
@@ -7478,7 +7479,8 @@
                 "61cb45a0.e50074"
             ],
             [
-                "ce43fd6d.7b213"
+                "ce43fd6d.7b213",
+                "e7cf9a15.03d2b8"
             ]
         ]
     },
@@ -10951,23 +10953,6 @@
         ]
     },
     {
-        "id": "81d26c3d.afe5b",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 130,
-        "y": 1240,
-        "wires": []
-    },
-    {
         "id": "dc26dcc0.bdbe6",
         "type": "comment",
         "z": "38c422f8.b82bf6",
@@ -11137,23 +11122,6 @@
         "statusType": "auto",
         "x": 530,
         "y": 1080,
-        "wires": []
-    },
-    {
-        "id": "32d654b5.43c0dc",
-        "type": "debug",
-        "z": "38c422f8.b82bf6",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 350,
-        "y": 1220,
         "wires": []
     },
     {
@@ -12229,5 +12197,160 @@
                 "9d0aac45.f6d3c8"
             ]
         ]
+    },
+    {
+        "id": "34f31521.2b27d2",
+        "type": "function",
+        "z": "38c422f8.b82bf6",
+        "name": "Старт канселятора",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n//>трекер>\n\n\n//>трекер>\n    let end_node_time = Date.parse(new Date()) / 1000;\n    let duration = end_node_time - start_node_time;\n    track.push({\n        \"steptitle\": steptitle,\n        \"start_node_time\": start_node_time,\n        \"end_node_time\": end_node_time,\n        \"duration\": duration\n    });\n    flow.set(\"track\", track);\n//>трекер>\nnode.status({fill:\"green\",shape:\"dot\"});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 220,
+        "y": 1220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a977adc.3407ce",
+        "type": "filter",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "asArray": true,
+        "itemProperty": "7",
+        "itemPropertyType": "item",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num",
+                "output": 1
+            },
+            {
+                "t": "null",
+                "output": 2
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 580,
+        "y": 1380,
+        "wires": [
+            [
+                "93c3bc16.970708"
+            ],
+            [
+                "66b556ec.9a6f58"
+            ]
+        ]
+    },
+    {
+        "id": "93c3bc16.970708",
+        "type": "debug",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "e7cf9a15.03d2b8",
+        "type": "debug",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "5acd6a6e.04f10c",
+        "type": "debug",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "f8a6e470.166c58",
+        "type": "function",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "func": "msg.payload = msg.payload.bot.floors;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 460,
+        "y": 1320,
+        "wires": [
+            [
+                "3a977adc.3407ce",
+                "1509e627.76e8e2"
+            ]
+        ]
+    },
+    {
+        "id": "1509e627.76e8e2",
+        "type": "debug",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "66b556ec.9a6f58",
+        "type": "debug",
+        "z": "38c422f8.b82bf6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 1400,
+        "wires": []
     }
 ]
