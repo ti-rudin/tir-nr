@@ -413,6 +413,7 @@
     {
         "id": "5673f1d5.dd5f1",
         "type": "mqtt-broker",
+        "d": true,
         "name": "",
         "broker": "mybroker",
         "port": "1883",
