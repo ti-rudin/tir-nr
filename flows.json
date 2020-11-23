@@ -16402,8 +16402,8 @@
         "y": 220,
         "wires": [
             [
-                "239253ed.cd5e7c",
-                "bb20c3d.ef27a4"
+                "bb20c3d.ef27a4",
+                "192054d1.4fe29b"
             ]
         ]
     },
@@ -16412,17 +16412,17 @@
         "type": "function",
         "z": "5df15275.2888ec",
         "name": "getbot_status",
-        "func": "\nlet botname = msg.req.body.botname;\n\nconst gb = global.get('getbot_status')(botname);\n\ngb.then(gb => {\n    \n    msg.payload = JSON.parse(gb);\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});",
+        "func": "\nlet botname = msg.payload.botname;\n\nconst gb = global.get('getbot_status')(botname);\n\ngb.then(gb => {\n    \n    msg.bot.status = JSON.parse(gb);\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 3640,
+        "x": 3960,
         "y": 220,
         "wires": [
             [
-                "13685612.fa676a",
-                "d0da3fbd.36124"
+                "d0da3fbd.36124",
+                "4c5eb819.338738"
             ]
         ]
     },
@@ -16433,7 +16433,7 @@
         "name": "",
         "statusCode": "200",
         "headers": {},
-        "x": 3840,
+        "x": 4340,
         "y": 220,
         "wires": []
     },
@@ -16442,7 +16442,7 @@
         "type": "debug",
         "z": "5df15275.2888ec",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -16459,7 +16459,7 @@
         "type": "debug",
         "z": "5df15275.2888ec",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -16467,8 +16467,143 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 3850,
-        "y": 380,
+        "x": 4030,
+        "y": 580,
         "wires": []
+    },
+    {
+        "id": "e1f1b119.0f2f1",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "func": "msg.topic = \"d3fmoh2rVoVNgIcpLTFZBE0jHnI2-bots\";\nmsgp.payload= [];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3110,
+        "y": 700,
+        "wires": [
+            [
+                "d577802f.1b12c"
+            ]
+        ]
+    },
+    {
+        "id": "d577802f.1b12c",
+        "type": "redis-command",
+        "z": "5df15275.2888ec",
+        "server": "f120eab2.0a60a8",
+        "command": "getset",
+        "name": "",
+        "topic": "",
+        "params": "[]",
+        "paramsType": "json",
+        "payloadType": "json",
+        "block": false,
+        "x": 3290,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98f37d3.dcbc68",
+        "type": "inject",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 2870,
+        "y": 700,
+        "wires": [
+            [
+                "e1f1b119.0f2f1"
+            ]
+        ]
+    },
+    {
+        "id": "192054d1.4fe29b",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "getbot_settings",
+        "func": "//<трекер<\n    let track = flow.get(\"track\");\n    let start_node_time = Date.parse(new Date()) / 1000;\n    let steptitle = node.name;\n\n    let laststep = track[track.length-1];\n    let last_node_end_time = laststep.end_node_time;\n//>трекер>\n\nlet bot = {};\nmsg.bot = bot;\nconst gb = global.get('getbot_settings')(msg.payload.botname);\n\ngb.then(gb => {\n    \n    msg.bot.settings = JSON.parse(gb);\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3680,
+        "y": 220,
+        "wires": [
+            [
+                "31b4b364.52623c",
+                "239253ed.cd5e7c"
+            ]
+        ]
+    },
+    {
+        "id": "31b4b364.52623c",
+        "type": "debug",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3910,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "81e84e3.b696ab",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "getbot_status",
+        "func": "\nlet botname = msg.req.body.botname;\n\nconst gb = global.get('getbot_status')(botname);\n\ngb.then(gb => {\n    \n    msg.bot.status = JSON.parse(gb);\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 4240,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c5eb819.338738",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "prepare data",
+        "func": "msg.payload = msg.bot;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 4170,
+        "y": 220,
+        "wires": [
+            [
+                "13685612.fa676a"
+            ]
+        ]
     }
 ]
