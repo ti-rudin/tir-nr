@@ -13956,15 +13956,15 @@
         "op2": "0",
         "op1type": "str",
         "op2type": "str",
-        "duration": "-1",
+        "duration": "-500",
         "extend": false,
         "overrideDelay": false,
-        "units": "s",
+        "units": "ms",
         "reset": "",
         "bytopic": "all",
         "topic": "topic",
         "outputs": 1,
-        "x": 460,
+        "x": 480,
         "y": 1200,
         "wires": [
             [
@@ -15718,8 +15718,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 170,
-        "y": 1660,
+        "x": 1410,
+        "y": 1620,
         "wires": []
     },
     {
@@ -16191,7 +16191,8 @@
         "y": 1500,
         "wires": [
             [
-                "14ffa955.ed6edf"
+                "14ffa955.ed6edf",
+                "1fd17cff.3ce70b"
             ]
         ],
         "icon": "font-awesome/fa-bolt"
@@ -16264,5 +16265,210 @@
                 "9f82a757.25f3d"
             ]
         ]
+    },
+    {
+        "id": "9cbb75e6.0f4498",
+        "type": "http in",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "url": "/botslist",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 3450,
+        "y": 140,
+        "wires": [
+            [
+                "d2e4b8ad.2f61c8"
+            ]
+        ]
+    },
+    {
+        "id": "6f87fcb7.9335e4",
+        "type": "http response",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 4220,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b7739a3.fc89468",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3480,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d2e4b8ad.2f61c8",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "getbotlist",
+        "func": "\n\nlet guid = global.get('guid');\n\nconst gbl = global.get('getbotlist')(guid);\n\ngbl.then(gbl => {\n    \n    msg.payload = JSON.parse(gbl);\n    \n\n    node.status({fill:\"green\",shape:\"dot\"});\n    node.send(msg);\n\n}).catch(error => {\n    \n\n    node.status({fill:\"red\",shape:\"dot\"});\n    \n    node.error(error);\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3620,
+        "y": 140,
+        "wires": [
+            [
+                "80d7c6d0.cd5e08"
+            ]
+        ]
+    },
+    {
+        "id": "f0503628.d8df98",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "func": "let guid = global.get('guid');\nmsg.payload = [true, msg.payload, 0, 0, 0, 0, 0, 0, guid];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3920,
+        "y": 140,
+        "wires": [
+            [
+                "712f8721.08ce18"
+            ]
+        ]
+    },
+    {
+        "id": "80d7c6d0.cd5e08",
+        "type": "split",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 3770,
+        "y": 140,
+        "wires": [
+            [
+                "f0503628.d8df98"
+            ]
+        ]
+    },
+    {
+        "id": "712f8721.08ce18",
+        "type": "join",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "mode": "auto",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 4070,
+        "y": 140,
+        "wires": [
+            [
+                "6f87fcb7.9335e4"
+            ]
+        ]
+    },
+    {
+        "id": "1a05e8c0.3a30d7",
+        "type": "http in",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "url": "/bot_status",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 3460,
+        "y": 220,
+        "wires": [
+            [
+                "239253ed.cd5e7c",
+                "bb20c3d.ef27a4"
+            ]
+        ]
+    },
+    {
+        "id": "239253ed.cd5e7c",
+        "type": "function",
+        "z": "5df15275.2888ec",
+        "name": "getbot_status",
+        "func": "\nlet botname = msg.req.body.botname;\n\nconst gb = global.get('getbot_status')(botname);\n\ngb.then(gb => {\n    \n    msg.payload = JSON.parse(gb);\n    node.send(msg);\n\n}).catch(error => {\n    node.error(error);\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 3640,
+        "y": 220,
+        "wires": [
+            [
+                "13685612.fa676a",
+                "d0da3fbd.36124"
+            ]
+        ]
+    },
+    {
+        "id": "13685612.fa676a",
+        "type": "http response",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 3840,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "bb20c3d.ef27a4",
+        "type": "debug",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3620,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d0da3fbd.36124",
+        "type": "debug",
+        "z": "5df15275.2888ec",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3850,
+        "y": 380,
+        "wires": []
     }
 ]
